@@ -42,6 +42,37 @@ This will:
 
 ---
 
+### Installation (Docker)
+
+If you prefer running the game in a Docker container:
+
+1. Ensure [Docker](https://www.docker.com/) is installed on your system.
+2. Clone the repository:
+
+```bash
+git clone https://github.com/Informatics-John-Innes-Centre/nbipath.git
+cd nbipath
+```
+
+```bash
+3. Build the Docker image:
+
+```bash
+docker build -t nbipath:latest .
+```
+
+4. Run the game in a container:
+
+```bash
+docker run -it --rm nbipath:latest
+```
+
+To remove the Docker image later:
+
+```bash
+docker rmi nbipath:latest
+```
+
 ## How to Play
 
 Once installed, run:
