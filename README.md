@@ -10,21 +10,23 @@ A command-line game to learn and practice `cd`, `pwd`, `ls`, absolute, and relat
 
 If you are not comfortable with this, please review the `install.sh` and `creating_paths.sh` scripts before proceeding. An uninstallation script is provided to safely remove all created directories.
 
+> **Tip:** If you prefer not to create directories on your system, you can run the game inside a Docker container (see [Docker Installation](#installation-docker)).
+
 ---
 
 ## Getting Started
 
 ### Prerequisites
 
-* A Unix-like environment (Linux, macOS, or WSL on Windows).
-* `bash` (version 4 or higher recommended).
-* `sudo` access to run the installer.
+* A Unix-like environment (Linux, macOS, or WSL on Windows) or Docker.
+* `bash` (version 4 or higher recommended) if running natively.
+* `sudo` access to run the installer (for native installation).
 
 > Optional: For best experience, ensure `readline` support is enabled in your Bash shell (for arrow keys and tab completion).
 
 ---
 
-### Installation
+## Installation (Native)
 
 1. Clone the repository or download the files.
 2. Open your terminal and navigate to the project directory.
@@ -37,16 +39,16 @@ sudo bash install.sh
 This will:
 
 * Make the game script executable.
-* Create the required NBI directory map.
+* Create the required `/norwich` directory map.
 * Create a symbolic link at `/usr/local/bin/nbipath` so you can run the game from anywhere.
 
 ---
 
-### Installation (Docker)
+## Installation (Docker)
 
-If you prefer running the game in a Docker container:
+If you prefer running the game in a container without creating `/norwich` on your system:
 
-1. Ensure [Docker](https://www.docker.com/) is installed on your system.
+1. Ensure [Docker](https://www.docker.com/) is installed.
 2. Clone the repository:
 
 ```bash
@@ -66,15 +68,19 @@ docker build -t nbipath:latest .
 docker run -it --rm nbipath:latest
 ```
 
-To remove the Docker image later:
+5. To remove the Docker image later:
 
 ```bash
 docker rmi nbipath:latest
 ```
 
+> Running in Docker ensures the `/norwich` directory exists only inside the container, leaving your host filesystem untouched.
+
+---
+
 ## How to Play
 
-Once installed, run:
+Once installed (either natively or via Docker), run:
 
 ```bash
 nbipath
@@ -93,7 +99,7 @@ The game will then start:
 
 ## Uninstallation
 
-To remove the game and all its created files, run the uninstaller from the project directory with `sudo`:
+To remove the game and all its created files (native installation):
 
 ```bash
 sudo bash uninstall.sh
@@ -103,6 +109,8 @@ This will remove:
 
 * The symbolic link `/usr/local/bin/nbipath`.
 * The `/norwich` directory structure and all subdirectories created for the game.
+
+> Docker users can simply remove the container and/or image; no host directories are modified.
 
 ---
 
@@ -114,13 +122,11 @@ This will remove:
 * **Scoring system:** Points decrease with incorrect attempts.
 * **Tab completion:** Auto-complete paths using the `Tab` key.
 * **Command history:** Arrow-up/down to navigate previous commands.
+* **Docker support:** Run the game containerized without touching your host filesystem.
 
 ---
 
-
 ## Author
 
-This game was created by Miguel Gonzalez Sanchez.  
+This game was created by Miguel Gonzalez Sanchez.
 GitHub: [@cotximahou](https://github.com/cotximahou)
-
-
