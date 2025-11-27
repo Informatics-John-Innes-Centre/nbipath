@@ -54,7 +54,6 @@ git clone https://github.com/Informatics-John-Innes-Centre/nbipath.git
 cd nbipath
 ```
 
-```bash
 3. Build the Docker image:
 
 ```bash
@@ -123,4 +122,5 @@ This will remove:
 
 This game was created by Miguel Gonzalez Sanchez.  
 GitHub: [@cotximahou](https://github.com/cotximahou)
+
 
