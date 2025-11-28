@@ -244,13 +244,6 @@ all_paths=($(printf "%s\n" "${all_paths[@]}" | sort -u))
 
 generate_path_type() { [[ $((RANDOM % 10)) -le 2 ]] && echo "absolute" || echo "relative"; }
 
-quests=()
-for i in {1..10}; do
-  q="${all_paths[$RANDOM % ${#all_paths[@]}]}"
-  type=$(generate_path_type)
-  quests+=("$q|$type")
-done
-
 quest_i=0
 total_score=0
 
@@ -264,7 +257,13 @@ echo "Starting point: $current"
 # MAIN LOOP
 # -------------------------
 while (( quest_i < 10 )); do
-  IFS="|" read -r target required <<< "${quests[$quest_i]}"
+  while true; do
+    target="${all_paths[$RANDOM % ${#all_paths[@]}]}"
+    if [[ "$target" != "$current" ]]; then
+      break
+    fi
+  done
+  required=$(generate_path_type)
   quest_score=10
   show_tree
 
