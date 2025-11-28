@@ -270,7 +270,7 @@ while (( quest_i < 10 )); do
   while (( quest_score > 0 )); do
     echo
     echo -e "📍 ${YELLOW}Current:${RESET} ${BOLD}$current${RESET}"
-    echo -e "🎯 ${CYAN}Quest ${quest_i+1}/10 →${RESET} ${BOLD}$target${RESET}"
+    echo -e "🎯 ${CYAN}Quest $((quest_i+1))/10 →${RESET} ${BOLD}$target${RESET}"
     echo -e "🔧 ${MAGENTA}Required:${RESET} $required path"
     echo -e "⭐ ${GREEN}Points left:${RESET} ${BOLD}$quest_score${RESET}"
     echo -e "💡 Type ${BOLD}help${RESET} if you are lost"
