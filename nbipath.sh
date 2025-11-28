@@ -52,13 +52,32 @@ map=(
 # NORMALIZE & VALIDATE
 # -------------------------
 normalize() {
-    if [[ "$1" == /* ]]; then
-        # absolute
-        readlink -m "$1"
-    else
-        # relative to simulated current dir
-        readlink -m "$current/$1"
+    local path="$1"
+    local new_path
+
+    if [[ "$path" != /* ]]; then
+        path="$current/$path"
     fi
+
+    # Split the path into components
+    IFS='/' read -r -a components <<< "$path"
+
+    # Process components
+    local -a resolved_path
+    for component in "${components[@]}"; do
+        if [[ "$component" == ".." ]]; then
+            # Go up one level, but not above root
+            if [[ ${#resolved_path[@]} -gt 0 ]]; then
+                unset 'resolved_path[${#resolved_path[@]}-1]'
+            fi
+        elif [[ "$component" != "." && "$component" != "" ]]; then
+            resolved_path+=("$component")
+        fi
+    done
+
+    # Join the components back into a string
+    new_path="/$(IFS=/; echo "${resolved_path[*]}")"
+    echo "$new_path"
 }
 
 valid_path() {
@@ -383,8 +402,7 @@ while (( quest_i < 10 )); do
     # -------------------------
     # CALCULATE NEW PATH
     # -------------------------
-    newpath="$([[ "$arg" == /* ]] && echo "$arg" || echo "$current/$arg")"
-    newpath=$(normalize "$newpath")
+    newpath=$(normalize "$arg")
 
     if ! valid_path "$newpath"; then
       echo "❌ Invalid path"
@@ -402,6 +420,7 @@ while (( quest_i < 10 )); do
 
 
     current="$newpath"
+    cd "$current"
     echo "➡️  Moved to: $current"
     show_tree
 
