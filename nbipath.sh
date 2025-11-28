@@ -51,19 +51,33 @@ map=(
 # -------------------------
 # NORMALIZE & VALIDATE
 # -------------------------
-normalize() { readlink -m "$1"; }
+normalize() {
+    if [[ "$1" == /* ]]; then
+        # absolute
+        readlink -m "$1"
+    else
+        # relative to simulated current dir
+        readlink -m "$current/$1"
+    fi
+}
 
 valid_path() {
-  local check=$(normalize "$1")
-  for room in "${map[@]}"; do
-    local r=$(normalize "$room")
-    # Accept if check matches the room itself OR any parent in its path
-    if [[ "$check" == "$r" || "$r" == "$check"* || "$check" == "$r"* ]]; then
-        return 0
-    fi
-  done
-  return 1
+    local check=$(normalize "$1")
+
+    for room in "${map[@]}"; do
+        local r=$(normalize "$room")
+
+        # walk upwards
+        local p="$r"
+        while [[ "$p" != "/" ]]; do
+            [[ "$check" == "$p" ]] && return 0
+            p=$(dirname "$p")
+        done
+    done
+
+    return 1
 }
+
 
 
 # -------------------------
@@ -377,6 +391,15 @@ while (( quest_i < 10 )); do
       ((quest_score--))
       continue
     fi
+
+    # If path is not exactly the target, don't move
+    if [[ "$newpath" != "$target" ]]; then
+        echo "❌ That is a valid path, but it is NOT the quest destination."
+        echo "   You must reach: $target"
+        ((quest_score--))
+        continue
+    fi
+
 
     current="$newpath"
     echo "➡️  Moved to: $current"
